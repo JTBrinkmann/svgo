@@ -24,7 +24,11 @@ exports.fn = function (root) {
   const seen = new Map();
   let count = 0;
   const defs = [];
+  let svgElem;
   traverse(root, (node) => {
+    if (node.type === 'element' && node.name === 'svg') {
+      svgElem = node;
+    }
     if (
       node.type !== 'element' ||
       node.name !== 'path' ||
@@ -66,8 +70,11 @@ exports.fn = function (root) {
       delete defClone.attributes.transform;
       defsTag.spliceContent(0, 0, defClone);
       // Convert the original def to a use so the first usage isn't duplicated.
-      def = convertToUse(def, defClone.attributes.id);
+      convertToUse(def, defClone.attributes.id);
       delete def.attributes.id;
+    }
+    if (svgElem) {
+      svgElem.attributes["xmlns:xlink"] = "http://www.w3.org/1999/xlink";
     }
   }
   return root;
