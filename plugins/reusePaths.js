@@ -66,7 +66,7 @@ exports.fn = function (root) {
       delete defClone.attributes.transform;
       defsTag.spliceContent(0, 0, defClone);
       // Convert the original def to a use so the first usage isn't duplicated.
-      def = convertToUse(def, defClone.attributes.id);
+      convertToUse(def, defClone.attributes.id);
       delete def.attributes.id;
     }
   }
@@ -79,7 +79,7 @@ function convertToUse(item, href) {
   delete item.attributes.d;
   delete item.attributes.stroke;
   delete item.attributes.fill;
-  item.attributes['xlink:href'] = '#' + href;
+  item.attributes['href'] = '#' + href;
   delete item.pathJS;
   return item;
 }
